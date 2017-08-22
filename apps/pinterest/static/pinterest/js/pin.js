@@ -4,6 +4,6 @@ $(document).ready(function () {
         columnWidth: '.grid-sizer',
         percentPosition: true,
         horizontalOrder: true,
-        gutter: 5%
+        gutter: '.gutter-sizer'
     })
 });

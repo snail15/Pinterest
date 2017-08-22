@@ -13,34 +13,38 @@
 .grid-sizer,
 .grid-item { width: 16%; }
 
-img {
+.gutter-sizer { width: 1%; }
+
+.grid-item { margin-bottom: 2%;}
+.pin-row img {
     width: 100%;
 }
+
 
 @media only screen and (max-width: 768px) {
     .container {
         max-width: 769px;
     }
     .grid-sizer,
-    .grid-item { width: 48%; }
+    .grid-item { width: 49.5%; }
 }
 @media only screen and (min-width: 769px) {
     .grid-sizer,
-    .grid-item { width: 24%; }
+    .grid-item { width: 24.2%; }
     .container {
         max-width: 992px;
     }
 }
 @media only screen and (min-width: 992px) {
     .grid-sizer,
-    .grid-item { width: 19%; }
+    .grid-item { width: 19.2%; }
     .container {
         max-width: 1200px;
     }
 }
 @media only screen and (min-width: 1200px) {
     .grid-sizer,
-    .grid-item { width: 15%; }
+    .grid-item { width: 15.8%; }
     .container {
         max-width: 1680px;
     }
