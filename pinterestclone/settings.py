@@ -34,7 +34,7 @@ INTERNAL_IPS =['127.0.0.1']
 
 INSTALLED_APPS = [
     'apps.users',
-    'apps.pinterest',
+    # 'apps.pinterest',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
