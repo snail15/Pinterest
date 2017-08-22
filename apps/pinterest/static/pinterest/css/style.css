@@ -26,21 +26,21 @@ img {
 }
 @media only screen and (min-width: 769px) {
     .grid-sizer,
-    .grid-item { width: 25%; }
+    .grid-item { width: 24%; }
     .container {
         max-width: 992px;
     }
 }
 @media only screen and (min-width: 992px) {
     .grid-sizer,
-    .grid-item { width: 20%; }
+    .grid-item { width: 19%; }
     .container {
         max-width: 1200px;
     }
 }
 @media only screen and (min-width: 1200px) {
     .grid-sizer,
-    .grid-item { width: 16%; }
+    .grid-item { width: 15%; }
     .container {
         max-width: 1680px;
     }
