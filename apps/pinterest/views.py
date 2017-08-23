@@ -38,7 +38,7 @@ def create_pin(request):
         new_pin = form.save(commit=False)
         new_pin.created_by = user
         new_pin.save()
-        return redirect('pinterest/pins/')
+        return redirect(reverse('pinterest:pin_index'))
     elif request.method == "GET":
         form = PinForm()
         context = {
@@ -87,6 +87,7 @@ def delete_pin(request, id):
 
 def user_show(request):
     current_user = User.objects.filter(email=request.session['email'])
+    return render(request, 'pinterest/user_show.html')
     
 
 # def board_index(request):
