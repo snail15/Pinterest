@@ -25,6 +25,8 @@
     padding-left: 0.5%;
     padding-bottom: 0.5%;
     background-color: white;
+    margin-bottom: 0.7%;
+    border-bottom: 1px solid grey;
 }
 
 .navbar li,
@@ -48,7 +50,7 @@
 
 .navbar-nav {
     position: absolute;
-    right: 2%;
+    right: 3%;
 }
 
 

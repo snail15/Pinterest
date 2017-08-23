@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Pin, Board
 from ..users.models import User
 from .forms import PinForm, BoardForm
+from django.contrib import messages
+from django.core.urlresolvers import reverse
 
 # Create your views here.
 def index(request):
@@ -71,6 +73,9 @@ def delete_pin(request, id):
     elif request.method == "GET":
         return render(request, 'pinterest/delete_pin.html', context)
 
+def user_show(request):
+    current_user = User.objects.filter(email=request.session['email'])
+    
 
 # def board_index(request):
 
