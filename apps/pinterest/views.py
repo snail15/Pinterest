@@ -33,6 +33,7 @@ def create_pin(request):
         data['title'] = request.POST['title']
         data['description'] = request.POST['description']
         data['image'] = request.FILES['image']
+        data['topic'] = request.POST['topic']
         data['created_by'] = user
         form = PinForm(data)
         new_pin = form.save(commit=False)
