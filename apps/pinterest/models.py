@@ -9,6 +9,7 @@ class Pin(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     image = models.ImageField('jpg', upload_to='pins', blank=True)
+    topic = models.CharField(max_length=255)
     created_by = models.ForeignKey(User, related_name='pins_created')
     liked_by = models.ManyToManyField(User, related_name='pins_liked', blank=True)
     saved_by = models.ManyToManyField(User, related_name='pins_saved', blank=True)
