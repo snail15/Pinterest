@@ -1,14 +1,17 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Pin, Board
 from ..users.models import User
 from .forms import PinForm, BoardForm
 
 # Create your views here.
+
+
 def index(request):
     return render(request, 'pinterest/index.html')
+
 
 def pin_index(request):
     pins = Pin.objects.all()
@@ -17,23 +20,30 @@ def pin_index(request):
     }
     return render(request, 'pinterest/pin_index.html', context)
 
+
 def create_pin(request):
     if request.method == "POST":
         try:
             user = User.objects.get(email=request.session['email'])
         except Exception as problem:
             return redirect('/')
-        form = PinForm(request.POST)
+        data = {}
+        data['title'] = request.POST['title']
+        data['description'] = request.POST['description']
+        data['image'] = request.FILES['image']
+        data['created_by'] = user
+        form = PinForm(data)
         new_pin = form.save(commit=False)
         new_pin.created_by = user
         new_pin.save()
-        return redirect('/')
+        return redirect('pinterest/pins/')
     elif request.method == "GET":
         form = PinForm()
         context = {
             'form': form
         }
         return render(request, 'pinterest/create_pin.html', context)
+
 
 def show_pin(request, id):
     try:
@@ -44,6 +54,7 @@ def show_pin(request, id):
         'pin': pin
     }
     return render(request, 'pinterest/show_pin.html', context)
+
 
 def edit_pin(request, id):
     try:
@@ -57,6 +68,7 @@ def edit_pin(request, id):
         return redirect('/')
     elif request.method == "GET":
         return render(request, 'pinterest/edit_pin.html', context)
+
 
 def delete_pin(request, id):
     try:

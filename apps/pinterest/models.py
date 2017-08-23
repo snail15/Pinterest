@@ -8,7 +8,7 @@ from ..users.models import User
 class Pin(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    image = models.ImageField('jpg', upload_to='pins')
+    image = models.ImageField('jpg', upload_to='pins', blank=True)
     created_by = models.ForeignKey(User, related_name='pins_created')
     liked_by = models.ManyToManyField(User, related_name='pins_liked', blank=True)
     saved_by = models.ManyToManyField(User, related_name='pins_saved', blank=True)
