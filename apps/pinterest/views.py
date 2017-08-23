@@ -36,6 +36,7 @@ def create_pin(request):
         data['created_by'] = user
         form = PinForm(data)
         new_pin = form.save(commit=False)
+        new_pin.image = request.FILES['image']
         new_pin.created_by = user
         new_pin.save()
         return redirect(reverse('pinterest:pin_index'))
