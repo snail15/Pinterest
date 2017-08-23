@@ -36,7 +36,7 @@
 
 .form-inline input[type=text] {
     font-size:85%;
-    width: 27rem; 
+    width: 4000%;
     background-color: #efefef;
     border: 0px solid white;
 }
@@ -44,11 +44,6 @@
 .mainpage-logo {
     height: 45px;
     width: 45px;
-}
-
-.navbar-nav {
-    position: absolute;
-    right: 2%;
 }
 
 
@@ -73,11 +68,11 @@
         max-width: 1200px;
     }
 }
-
 @media only screen and (min-width: 1200px) {
     .grid-sizer,
     .grid-item { width: 15.8%; }
     .container {
         max-width: 1680px;
     }
+
 }
