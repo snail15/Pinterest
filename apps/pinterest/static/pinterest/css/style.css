@@ -53,6 +53,11 @@
     right: 3%;
 }
 
+.btn-default {
+    text-decoration: none;
+    color: gray;
+    font-size: 80%;
+}
 
 @media only screen and (max-width: 768px) {
     .container {

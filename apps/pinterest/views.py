@@ -87,8 +87,15 @@ def delete_pin(request, id):
 
 def user_show(request):
     current_user = User.objects.filter(email=request.session['email'])
+    context = {
+        'user': current_user
+    }
     return render(request, 'pinterest/user_show.html')
-    
+
+def logout(request):
+    del request.session['username']
+    del request.session['email']
+    return redirect(reverse('users:greeting'))
 
 # def board_index(request):
 
