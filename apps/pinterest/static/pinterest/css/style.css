@@ -59,6 +59,34 @@
     font-size: 80%;
 }
 
+.follow-number {
+    margin-bottom: 0;
+}
+
+.follow-label {
+    font-size: 80%;
+    color: gray;
+}
+
+.create-link {
+    color: gray;
+    border-bottom: 2px solid transparent;
+    transition: border-bottom 0.5s;
+}
+
+.create-link:hover{
+     border-bottom: 2px solid gray;
+
+}
+
+.user-content-btn-row {
+    margin-top: 4%;
+}
+
+span{
+    color: gray;
+}
+
 @media only screen and (max-width: 768px) {
     .container {
         max-width: 769px;

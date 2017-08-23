@@ -87,11 +87,25 @@ def delete_pin(request, id):
         return render(request, 'pinterest/delete_pin.html', context)
 
 def user_show(request):
+   
     current_user = User.objects.filter(email=request.session['email'])
+    print(current_user)
+    following = current_user[0].following.all()
+    following_num = len(following)
+    
+    followers = current_user[0].followers.all()
+    followers_num = len(followers)
+
+    pin_form = PinForm()
+
     context = {
-        'user': current_user
+        'user': current_user,
+        'follower': followers_num,
+        'following': following_num,
+        'pin_form': pin_form
+
     }
-    return render(request, 'pinterest/user_show.html')
+    return render(request, 'pinterest/user_show.html', context)
 
 def logout(request):
     del request.session['username']

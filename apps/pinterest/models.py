@@ -7,7 +7,7 @@ from ..users.models import User
 # Create your models here.
 class Pin(models.Model):
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.CharField(max_length=255)
     image = models.ImageField('jpg', upload_to='pins', blank=True)
     created_by = models.ForeignKey(User, related_name='pins_created')
     liked_by = models.ManyToManyField(User, related_name='pins_liked', blank=True)
@@ -43,7 +43,7 @@ class BoardManager(models.Manager):
 class Board(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
-    pins = models.ManyToManyField(Pin)
+    pins = models.ManyToManyField(Pin, related_name='boards')
     created_by = models.ForeignKey(User, related_name='boards_created')
     liked_by = models.ManyToManyField(User,related_name='boards_liked', blank=True)
     saved_by = models.ManyToManyField(User, related_name='boards_saved',blank=True)
@@ -55,7 +55,7 @@ class Board(models.Model):
         return self.title
 
 class BaseComment(models.Model):
-    author = models.ForeignKey(User)
+    author = models.ForeignKey(User, related_name='comments')
     title = models.CharField(max_length=255)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
