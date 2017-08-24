@@ -41,16 +41,31 @@
                 </nav>
             </div>
         </div>
-        <div class="row pin-row">
-            <div class="col-sm-12">
-                <div class="grid">
-                    <div class="grid-sizer"></div>
-                    <div class="gutter-sizer"></div>
-                    {% for pin in pins %}
-                        <div class="grid-item"><img src="{{pin.image.url}}" alt="pin image"></div>
-                    {% endfor %}
+         <div class="row link-row">
+            <div class="col-sm-6">
+                <a href="{%url 'pinterest:show_user_pins'%}" class='create-link' id='showPin'>Your Pin</a>
+            </div>
+            <div class="col-sm-6">
+                 <a href="{%url 'pinterest:board_index'%}" class='create-link' id='showBoard'>Your Board</a>
+            </div>
+        </div>
+        <div class="row board-row">
+            {% for board in boards %}
+            <div class="col-sm-2">
+                <div class="board-card">
+                    <div class="row">
+                        <div class="col-sm-12 board-box">
+
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 board-name">
+                            <p class='board-title'>{{board.title}}</p>
+                        </div>
+                    </div>
                 </div>
             </div>
+            {% endfor %}
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>

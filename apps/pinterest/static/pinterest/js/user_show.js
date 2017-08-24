@@ -9,7 +9,5 @@ function activateMasonary(){
 }
 
 $(document).ready(function () {
-   
     activateMasonary();
-
 });

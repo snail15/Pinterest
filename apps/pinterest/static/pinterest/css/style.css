@@ -69,12 +69,14 @@
 }
 
 .create-link {
+    text-decoration: none;
     color: gray;
     border-bottom: 2px solid transparent;
     transition: border-bottom 0.5s;
 }
 
 .create-link:hover{
+     text-decoration: none;
      border-bottom: 2px solid gray;
 
 }
@@ -87,6 +89,30 @@ span{
     color: gray;
 }
 
+.btn-modal {
+    margin-top: 3%;
+}
+
+#showPin,
+#showBoard {
+    margin-left: 35%;
+}
+
+.link-row {
+    margin-bottom: 2%;
+}
+
+.board-card {
+    margin-left: 7%;
+}
+.board-box{
+    width: 100%;
+    height: 200px;
+    background-color: gray;
+}
+.board-title {
+    text-align: center;
+}
 @media only screen and (max-width: 768px) {
     .container {
         max-width: 769px;

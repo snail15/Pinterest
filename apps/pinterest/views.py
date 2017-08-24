@@ -32,15 +32,15 @@ def create_pin(request):
         data = {}
         data['title'] = request.POST['title']
         data['description'] = request.POST['description']
-        data['image'] = request.FILES['image']
         data['topic'] = request.POST['topic']
+        data['image'] = request.FILES['image']
         data['created_by'] = user
         form = PinForm(data)
         new_pin = form.save(commit=False)
         new_pin.image = request.FILES['image']
         new_pin.created_by = user
         new_pin.save()
-        return redirect(reverse('pinterest:pin_index'))
+        return redirect(reverse('pinterest:show_user_pins'))
     elif request.method == "GET":
         form = PinForm()
         context = {
@@ -98,26 +98,62 @@ def user_show(request):
     followers_num = len(followers)
 
     pin_form = PinForm()
+    board_form = BoardForm()
 
     context = {
         'user': current_user,
         'follower': followers_num,
         'following': following_num,
-        'pin_form': pin_form
+        'pin_form': pin_form,
+        'board_form': board_form
 
     }
     return render(request, 'pinterest/user_show.html', context)
 
 def logout(request):
+    
     del request.session['username']
     del request.session['email']
     return redirect(reverse('users:greeting'))
 
-# def board_index(request):
+def show_user_pins(request):
+    
+    user_pins = Pin.objects.filter(created_by=User.objects.get(email=request.session['email']))
+    context = {
+        'pins': user_pins
+    }
+    return render(request, 'pinterest/user_pin.html', context)
+
+def board_index(request):
+    user_boards = Board.objects.filter(created_by=User.objects.get(email=request.session['email']))
+    context = {
+        'boards': user_boards
+    }
+    return render(request, 'pinterest/board_index.html', context)
 
 
-# def create_board(request):
-
+def create_board(request):
+    
+    if request.method == "POST":
+            try:
+                user = User.objects.get(email=request.session['email'])
+            except Exception as problem:
+                return redirect('/')
+            data = {}
+            data['title'] = request.POST['title']
+            data['description'] = request.POST['description']
+            data['created_by'] = user
+            form = BoardForm(data)
+            new_board = form.save(commit=False)
+            new_board.created_by = user
+            new_board.save()
+            return redirect(reverse('pinterest:pin_index'))
+    elif request.method == "GET":
+        form = BoardForm()
+        context = {
+            'form': form
+        }
+        return render(request, 'pinterest/create_board.html', context)
 
 # def show_board(request):
 
