@@ -174,6 +174,16 @@ def create_board(request):
         return render(request, 'pinterest/create_board.html', context)
 
 # def show_board(request):
+def show_board(request, id):
+    try:
+        board = Board.objects.get(id=id)
+    except Exception as problem:
+        return redirect(reverse('pinterest:pin_index'))
+    context = {
+        'board': board,
+        'pins': board.pins.all()
+    }
+    return render(request, 'pinterest/show_board.html', context)
 
 
 # def edit_board(request):
