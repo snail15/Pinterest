@@ -6,7 +6,7 @@ function activateMasonary(){
             columnWidth: '.grid-sizer',
             percentPosition: true,
             horizontalOrder: true,
-            gutter: '.gutter-sizer'
+            gutter: '.gutter-sizer',
         });
     });
 
