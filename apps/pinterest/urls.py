@@ -9,11 +9,14 @@ urlpatterns = [
     url(r'^pins/(?P<id>)/edit/$', views.edit_pin),
     url(r'^pins/(?P<id>)/delete/$', views.delete_pin),
     url(r'^pins/user/$', views.user_show, name='user_show'),
+    url(r'^pins/user/(?P<id>)$', views.user_show_info, name='user_show_info'),
     url(r'^pins/logout$', views.logout, name='logout'),
     url(r'^pins/user/user_pins$', views.show_user_pins, name='show_user_pins'),
     url(r'^boards/create/$', views.create_board, name='create_board'),
     url(r'^boards/$', views.board_index, name='board_index'),
-    url(r'^pins/create_topic/$', views.create_topic, name="create_topic")
+    url(r'^pins/create_topic/$', views.create_topic, name="create_topic"),
+    url(r'^pins/search$', views.search, name="search"),
+
   
     # url(r'^boards/(?P<id>)/$', views.show_board),
     # url(r'^boards/(?P<id>)/edit/$', views.edit_board),

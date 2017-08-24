@@ -7,6 +7,7 @@ from ..users.models import User
 from .forms import PinForm, BoardForm, TopicForm
 from django.contrib import messages
 from django.core.urlresolvers import reverse
+from django.db.models import Q
 
 # Create your views here.
 def index(request):
@@ -147,12 +148,14 @@ def create_board(request):
     if request.method == "POST":
             try:
                 user = User.objects.get(email=request.session['email'])
+                topic = Topic.objects.get(id=request.POST['topic'])
             except Exception as problem:
                 return redirect('/')
             data = {}
             data['title'] = request.POST['title']
             data['description'] = request.POST['description']
             data['created_by'] = user
+            data['topic'] = [topic]
             form = BoardForm(data)
             new_board = form.save(commit=False)
             new_board.created_by = user
@@ -172,3 +175,19 @@ def create_board(request):
 
 
 # def delete_board(request):
+
+def search(request):
+    search_term = request.POST.get('search_bar')
+    print("#####################################")
+    print(search_term)
+    searched_pin = Pin.objects.filter(Q(title__contains=search_term) | Q(description__contains=search_term))
+    searched_user = User.objects.filter(name__startswith=search_term)
+    print(searched_user)
+    context = {
+        'pins': searched_pin
+        # 'users': searched_user
+    }
+    return render(request, 'pinterest/search_result.html', context)
+
+def user_show_info(request):
+    pass

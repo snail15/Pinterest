@@ -52,7 +52,7 @@ class BoardManager(models.Manager):
 
 class Board(models.Model):
     title = models.CharField(max_length=255)
-    description = models.TextField()
+    description = models.CharField(max_length=255)
     topic = models.ManyToManyField(Topic, related_name="boards")
     pins = models.ManyToManyField(Pin, related_name='boards')
     created_by = models.ForeignKey(User, related_name='boards_created')
