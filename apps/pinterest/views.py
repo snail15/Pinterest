@@ -2,15 +2,13 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect
-from .models import Pin, Board
+from .models import Pin, Board, Topic
 from ..users.models import User
-from .forms import PinForm, BoardForm
+from .forms import PinForm, BoardForm, TopicForm
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 
 # Create your views here.
-
-
 def index(request):
     return render(request, 'pinterest/index.html')
 
@@ -27,15 +25,17 @@ def create_pin(request):
     if request.method == "POST":
         try:
             user = User.objects.get(email=request.session['email'])
+            topic = Topic.objects.get(id=request.POST['topic'])
         except Exception as problem:
             return redirect('/')
         data = {}
         data['title'] = request.POST['title']
         data['description'] = request.POST['description']
-        data['topic'] = request.POST['topic']
         data['image'] = request.FILES['image']
+        data['topic'] = [topic]
         data['created_by'] = user
         form = PinForm(data)
+        print form
         new_pin = form.save(commit=False)
         new_pin.image = request.FILES['image']
         new_pin.created_by = user
@@ -43,8 +43,10 @@ def create_pin(request):
         return redirect(reverse('pinterest:show_user_pins'))
     elif request.method == "GET":
         form = PinForm()
+        topicForm = TopicForm()
         context = {
-            'form': form
+            'form': form,
+            'topicForm': topicForm
         }
         return render(request, 'pinterest/create_pin.html', context)
 
@@ -116,6 +118,7 @@ def logout(request):
     del request.session['email']
     return redirect(reverse('users:greeting'))
 
+<<<<<<< HEAD
 def show_user_pins(request):
     
     user_pins = Pin.objects.filter(created_by=User.objects.get(email=request.session['email']))
@@ -123,6 +126,15 @@ def show_user_pins(request):
         'pins': user_pins
     }
     return render(request, 'pinterest/user_pin.html', context)
+=======
+def create_topic(request):
+    if request.method == 'POST':
+        print "CREATING A TOPIC BABY"
+        Topic.objects.create(name=request.POST['name'])
+        return redirect(request.META.get('HTTP_REFERER', '/'))
+
+# def board_index(request):
+>>>>>>> 380dd62bbd444223b6c61845607c008f150143f5
 
 def board_index(request):
     user_boards = Board.objects.filter(created_by=User.objects.get(email=request.session['email']))

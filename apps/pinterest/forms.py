@@ -1,5 +1,6 @@
 from django.forms import ModelForm
-from .models import Pin, Board
+from .models import Pin, Board, Topic
+from django import forms
 
 class PinForm(ModelForm):
     class Meta:
@@ -9,4 +10,9 @@ class PinForm(ModelForm):
 class BoardForm(ModelForm):
     class Meta:
         model = Board
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'topic']
+
+class TopicForm(ModelForm):
+    class Meta:
+        model = Topic
+        fields = ['name']

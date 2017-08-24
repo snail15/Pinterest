@@ -42,3 +42,6 @@ class User(models.Model):
     def __repr__(self):
         return "User: {0}".format(self.name)
 
+    def __unicode__(self):
+        return self.email
+
