@@ -149,6 +149,10 @@ def create_board(request):
                 user = User.objects.get(email=request.session['email'])
             except Exception as problem:
                 return redirect('/')
+            try:
+                topic = Topic.objects.get(name=request.POST['topic'])
+            except:
+                topic = Topic.objects.create(name=request.POST['topic'])
             data = {}
             data['title'] = request.POST['title']
             data['description'] = request.POST['description']
