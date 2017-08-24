@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+<body>
+    <div class="row pin-row">
+        <div class="col-sm-12">
+            <div class="grid">
+                <div class="grid-sizer"></div>
+                <div class="gutter-sizer"></div>
+                {% for pin in pins %}
+                <div class="grid-item"><img class='pin-image' src="{%static 'pinterest/img/pin.png'%}" alt="pin"><img class='pin-thumnail' src="{{pin.image.url}}"
+                        alt="pin image"></div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</body>
+</html>
