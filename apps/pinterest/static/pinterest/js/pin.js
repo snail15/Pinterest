@@ -10,7 +10,6 @@ function activateMasonary(){
         });
     });
 
-
 }
 function getCookie(c_name)
 {

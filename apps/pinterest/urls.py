@@ -16,6 +16,7 @@ urlpatterns = [
     url(r'^boards/$', views.board_index, name='board_index'),
     url(r'^pins/create_topic/$', views.create_topic, name="create_topic"),
     url(r'^pins/search$', views.search, name="search"),
+    url(r'^pins/add/(?P<id>\d+)', views.add_pin, name="add_pin"),
 
   
     # url(r'^boards/(?P<id>)/$', views.show_board),

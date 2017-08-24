@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from .models import Pin, Board, Topic
 from ..users.models import User
 from .forms import PinForm, BoardForm, TopicForm
@@ -15,7 +15,8 @@ def index(request):
 
 
 def pin_index(request):
-    pins = Pin.objects.all()
+    current_user = User.objects.get(email=request.session['email'])
+    pins = Pin.objects.exclude(Q(created_by=current_user) | Q(saved_by=current_user))
     context = {
         'pins': pins
     }
@@ -121,7 +122,7 @@ def logout(request):
 
 def show_user_pins(request):
     
-    user_pins = Pin.objects.filter(created_by=User.objects.get(email=request.session['email']))
+    user_pins = Pin.objects.filter(Q(created_by=User.objects.get(email=request.session['email'])) | Q(saved_by=User.objects.get(email=request.session['email'])))
     context = {
         'pins': user_pins
     }
@@ -182,6 +183,12 @@ def create_board(request):
 
 def search(request):
     search_term = request.POST.get('search_bar')
+    if search_term == "":
+        searched_pin = Pin.objects.exclude(created_by=User.objects.get(email=request.session['email']))
+        context = {
+            'pins': searched_pin
+        }
+        return render(request, 'pinterest/search_result.html', context)
     print("#####################################")
     print(search_term)
     searched_pin = Pin.objects.filter(Q(title__contains=search_term) | Q(description__contains=search_term))
@@ -195,3 +202,10 @@ def search(request):
 
 def user_show_info(request):
     pass
+
+def add_pin(request, id):
+    current_user = User.objects.get(email=request.session['email'])
+    print('#############################',id)
+    current_user.pins_saved.add(Pin.objects.get(id=id))
+    current_user.save()
+    return redirect(reverse('pinterest:show_user_pins'))

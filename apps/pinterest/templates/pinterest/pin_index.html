@@ -55,7 +55,7 @@
                     <div class="grid-sizer"></div>
                     <div class="gutter-sizer"></div>
                     {% for pin in pins %}
-                        <div class="grid-item"><img class='pin-image' src="{%static 'pinterest/img/pin.png'%}" alt="pin"><img class='pin-thumnail' src="{{pin.image.url}}" alt="pin image"></div>
+                        <div class="grid-item"><a href="{%url 'pinterest:add_pin' id=pin.id %}" data-toggle='modal' data-target='#confirmModal'><img class='pin-thumbnail' src="{{pin.image.url}}" alt="pin image"></a></div>
                     {% endfor %}
                 </div>
             </div>
