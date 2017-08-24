@@ -103,11 +103,15 @@
                             {% csrf_token %}
                         <div class="wrapper">
                             <label for="{{ pin_form.title_for_label }}">Title:</label>
-                            {{pin_form.title}}
+                            {{board_form.title}}
+                        </div>
+                        <div class="wrapper">
+                            <label for="{{ pin_form.description_for_label }}">Description:</label>
+                            {{board_form.description}}
                         </div>
                         <div class="wrapper">
                             <label for="{{ pin_form.description_for_label }}">Topic:</label>
-                            {{pin_form.description}}
+                            {{board_form.topic}}
                         </div>
                         <input class='btn btn-primary btn-modal' type="submit" value="Save">
                         <button type="button" class="btn btn-secondary btn-modal" data-dismiss="modal">Close</button>
