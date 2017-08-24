@@ -8,10 +8,29 @@
 </head>
 <body>
     <h1>CREATE A PIN</h1>
-    <form action='{% url "pinterest:create" %}' method='post' enctype="multipart/form-data">
+    <form action='{% url "pinterest:create" %}' method='post' enctype="multipart/form-data" id="pinForm">
         {% csrf_token %}
-        {{form}}
-        <input type="submit" name="submit" value="CREATE PIN">
+        <div class="fieldWrapper">
+            {{ form.title.errors }}
+            <label for="{{ form.title.id_for_label }}">Pin Title:</label> {{ form.title }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.description.errors }}
+            <label for="{{ form.description.id_for_label }}">Description:</label> {{ form.description }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.image.errors }}
+            <label for="{{ form.image.id_for_label }}">Upload Image:</label> {{ form.image }}
+        </div>
+        <div class="fieldWrapper">
+            {{ form.topic.errors }}
+            <label for="{{ form.topic.id_for_label }}">Choose or Add a Topic:</label> {{ form.topic }}
+        </div>
+         <input type="submit" name="create_pin" value="CREATE PIN" form="pinForm">
+    </form>
+    <form action='{% url "pinterest:create_topic" %}' method='post' id="topicForm">
+        {% csrf_token %} {{topicForm}}
+        <input type="submit" name="create_topic" value="Create a new topic" form="topicForm">
     </form>
 </body>
 </html>

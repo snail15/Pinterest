@@ -5,11 +5,20 @@ from django.db import models
 from ..users.models import User
 
 # Create your models here.
+class Topic(models.Model):
+    name = models.CharField(max_length=255)
+    followers = models.ManyToManyField(User, related_name='topics_followed', blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __unicode__(self):
+        return self.name
+
 class Pin(models.Model):
     title = models.CharField(max_length=255)
     description = models.CharField(max_length=255)
     image = models.ImageField('jpg', upload_to='pins', blank=True)
-    topic = models.CharField(max_length=255)
+    topic = models.ManyToManyField(Topic, related_name='pins', blank=True)
     created_by = models.ForeignKey(User, related_name='pins_created')
     liked_by = models.ManyToManyField(User, related_name='pins_liked', blank=True)
     saved_by = models.ManyToManyField(User, related_name='pins_saved', blank=True)
@@ -44,6 +53,7 @@ class BoardManager(models.Manager):
 class Board(models.Model):
     title = models.CharField(max_length=255)
     description = models.TextField()
+    topic = models.ManyToManyField(Topic, related_name="boards")
     pins = models.ManyToManyField(Pin, related_name='boards')
     created_by = models.ForeignKey(User, related_name='boards_created')
     liked_by = models.ManyToManyField(User,related_name='boards_liked', blank=True)

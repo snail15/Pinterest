@@ -2,15 +2,13 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect
-from .models import Pin, Board
+from .models import Pin, Board, Topic
 from ..users.models import User
-from .forms import PinForm, BoardForm
+from .forms import PinForm, BoardForm, TopicForm
 from django.contrib import messages
 from django.core.urlresolvers import reverse
 
 # Create your views here.
-
-
 def index(request):
     return render(request, 'pinterest/index.html')
 
@@ -27,15 +25,17 @@ def create_pin(request):
     if request.method == "POST":
         try:
             user = User.objects.get(email=request.session['email'])
+            topic = Topic.objects.get(id=request.POST['topic'])
         except Exception as problem:
             return redirect('/')
         data = {}
         data['title'] = request.POST['title']
         data['description'] = request.POST['description']
         data['image'] = request.FILES['image']
-        data['topic'] = request.POST['topic']
+        data['topic'] = [topic]
         data['created_by'] = user
         form = PinForm(data)
+        print form
         new_pin = form.save(commit=False)
         new_pin.image = request.FILES['image']
         new_pin.created_by = user
@@ -43,8 +43,10 @@ def create_pin(request):
         return redirect(reverse('pinterest:pin_index'))
     elif request.method == "GET":
         form = PinForm()
+        topicForm = TopicForm()
         context = {
-            'form': form
+            'form': form,
+            'topicForm': topicForm
         }
         return render(request, 'pinterest/create_pin.html', context)
 
@@ -112,6 +114,12 @@ def logout(request):
     del request.session['username']
     del request.session['email']
     return redirect(reverse('users:greeting'))
+
+def create_topic(request):
+    if request.method == 'POST':
+        print "CREATING A TOPIC BABY"
+        Topic.objects.create(name=request.POST['name'])
+        return redirect(request.META.get('HTTP_REFERER', '/'))
 
 # def board_index(request):
 
