@@ -118,7 +118,6 @@ def logout(request):
     del request.session['email']
     return redirect(reverse('users:greeting'))
 
-<<<<<<< HEAD
 def show_user_pins(request):
     
     user_pins = Pin.objects.filter(created_by=User.objects.get(email=request.session['email']))
@@ -126,7 +125,7 @@ def show_user_pins(request):
         'pins': user_pins
     }
     return render(request, 'pinterest/user_pin.html', context)
-=======
+
 def create_topic(request):
     if request.method == 'POST':
         print "CREATING A TOPIC BABY"
@@ -134,7 +133,6 @@ def create_topic(request):
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
 # def board_index(request):
->>>>>>> 380dd62bbd444223b6c61845607c008f150143f5
 
 def board_index(request):
     user_boards = Board.objects.filter(created_by=User.objects.get(email=request.session['email']))
