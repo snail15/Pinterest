@@ -1,0 +1,26 @@
+    {% comment %} <div class="col-sm-12">
+        <h4>Users</h4>
+        {% for user in users %}
+        <a href="{%url 'pinterest:user_show_info' id=user.id%}">{{user.name}}</a>
+        {% endfor%}
+    </div>
+<div class="row"> {% endcomment %}
+    {% if pins %}
+    <div class="col-sm-12">
+        <div class="grid">
+            <div class="grid-sizer"></div>
+            <div class="gutter-sizer"></div>
+            {% for pin in pins %}
+                <div class="grid-item"><img src="{{pin.image.url}}" alt="pin image"></div>
+            {% endfor %}
+        </div>
+    </div>
+    {% elif users %}
+        <div class="col-sm-12">
+            {% for user in users %}
+               <a href="{%url 'pinterest:user_show_info' id=user.id %}"><h5>{{user.name}}</h5></a>
+            {% endfor %}
+    </div>
+    {% else %}
+    {% endif %}
+{% comment %} </div>  {% endcomment %}

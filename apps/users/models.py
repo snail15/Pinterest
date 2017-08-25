@@ -37,6 +37,11 @@ class User(models.Model):
     gender = models.IntegerField()
     email = models.CharField(max_length=100)
     password = models.CharField(max_length=255)
-    followings = models.ManyToManyField(Following, related_name='followers')
+    following = models.ManyToManyField("self", related_name='followers', symmetrical=False)
     objects = UserManager()
+    def __repr__(self):
+        return "User: {0}".format(self.name)
+
+    def __unicode__(self):
+        return self.email
 
