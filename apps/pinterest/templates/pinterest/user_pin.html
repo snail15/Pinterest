@@ -40,21 +40,63 @@
             </div>
         </div>
         <div class="row link-row">
+            {% if pins %}
             <div class="col-sm-6">
                 <a href="{%url 'pinterest:show_user_pins'%}" class='create-link' id='showPin'>Your Pin</a>
             </div>
             <div class="col-sm-6">
                  <a href="{%url 'pinterest:board_index'%}" class='create-link' id='showBoard'>Your Board</a>
             </div>
+            {% elif another_user_pins %}
+            <div class="col-sm-6">
+                <a href="{%url 'pinterest:show_another_user_pins' id=another_user.id%}" class='create-link' id='showPin'>{{another_user.name}}'s Pin</a>
+            </div>
+            <div class="col-sm-6">
+                 <a href="{%url 'pinterest:board_index'%}" class='create-link' id='showBoard'>{{another_user.name}}'s Board</a>
+            </div>
+            {% endif %}
         </div>
         <div class="row pin-row">
             <div class="col-sm-12">
                 <div class="grid">
                     <div class="grid-sizer"></div>
                     <div class="gutter-sizer"></div>
+                    {% if pins %}
                     {% for pin in pins %}
-                        <div class="grid-item"><img src="{{pin.image.url}}" alt="pin image"></div>
+                         <div class="grid-item">
+                        <div class="card">
+                            <img class="pin-thumbnail card-img-top" src="{{pin.image.url}}" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-title">{{pin.title}}</p>
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <a href="#" class="card-link btn btn-success">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     {% endfor %}
+                    {% elif another_user_pins %}
+                     {% for pin in another_user_pins %}
+                        <div class="grid-item">
+                        <div class="card">
+                            <img class="pin-thumbnail card-img-top" src="{{pin.image.url}}" alt="Card image cap">
+                            <div class="card-body">
+                                <p class="card-title">{{pin.title}}</p>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <a href="{%url 'pinterest:add_pin' id=pin.id %}" class="card-link btn btn-primary">Save Pin</a>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a href="#" class="card-link btn btn-success">View</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
                 </div>
             </div>
         </div>

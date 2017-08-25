@@ -275,3 +275,14 @@ def unfollow(request, id):
     current_user.following.remove(User.objects.get(id=id))
     current_user.save()
     return redirect(reverse('pinterest:user_show'))
+
+def show_another_user_pins(request, id):
+    current_user = User.objects.get(email=request.session['email'])
+    another_user = User.objects.get(id=id)
+    another_user_pins = Pin.objects.filter(Q(created_by=another_user) | Q(saved_by=another_user)).exclude(Q(saved_by=current_user) | Q(created_by=current_user))
+
+    context = {  
+        'another_user_pins': another_user_pins,
+        'another_user': another_user
+    }
+    return render(request, 'pinterest/user_pin.html', context)
