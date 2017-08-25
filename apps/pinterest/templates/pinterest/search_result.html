@@ -5,6 +5,7 @@
         {% endfor%}
     </div>
 <div class="row"> {% endcomment %}
+    {% if pins %}
     <div class="col-sm-12">
         <div class="grid">
             <div class="grid-sizer"></div>
@@ -14,4 +15,12 @@
             {% endfor %}
         </div>
     </div>
+    {% elif users %}
+        <div class="col-sm-12">
+            {% for user in users %}
+               <a href="{%url 'pinterest:user_show_info' id=user.id %}"><h5>{{user.name}}</h5></a>
+            {% endfor %}
+    </div>
+    {% else %}
+    {% endif %}
 {% comment %} </div>  {% endcomment %}

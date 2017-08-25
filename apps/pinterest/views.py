@@ -192,26 +192,74 @@ def show_board(request, id):
 # def delete_board(request):
 
 def search(request):
-    search_term = request.POST.get('search_bar')
-    if search_term == "":
-        searched_pin = Pin.objects.exclude(created_by=User.objects.get(email=request.session['email']))
+    if 'search_bar' in request.POST:
+        search_term = request.POST.get('search_bar')
+        if search_term == "":
+            searched_pin = Pin.objects.exclude(created_by=User.objects.get(email=request.session['email']))
+            context = {
+                'pins': searched_pin
+            }
+            return render(request, 'pinterest/search_result.html', context)
+        print("#####################################")
+        print(search_term)
+        searched_pin = Pin.objects.filter(Q(title__contains=search_term) | Q(description__contains=search_term))
+        searched_user = User.objects.filter(name__startswith=search_term)
+        print(searched_user)
         context = {
             'pins': searched_pin
         }
         return render(request, 'pinterest/search_result.html', context)
-    print("#####################################")
-    print(search_term)
-    searched_pin = Pin.objects.filter(Q(title__contains=search_term) | Q(description__contains=search_term))
-    searched_user = User.objects.filter(name__startswith=search_term)
-    print(searched_user)
-    context = {
-        'pins': searched_pin
-        # 'users': searched_user
-    }
-    return render(request, 'pinterest/search_result.html', context)
+    elif 'search_user' in request.POST:
+        search_term = request.POST.get('search_user')
+        if search_term == "":
+            searched_user = User.objects.filter(name=search_term)
+            context = {
+                'users': searched_user
+            }
+            return render(request, 'pinterest/search_result.html', context)
+        searched_user = User.objects.filter(Q(name__startswith=search_term) | Q(email__startswith=search_term))
+        print(searched_user)
+        context = {
+            'users': searched_user
+        }
+        return render(request, 'pinterest/search_result.html', context)
+    else:
+        search_term = request.POST.get('search_board')
+        if search_term == "":
+            searched_board = Board.objects.filter(title=search_term)
+            context = {
+                'boards': searched_user
+            }
+            return render(request, 'pinterest/search_result.html', context)
+        searched_boards = Board.objects.filter(Q(title__startswith=search_term) | Q(topic__startswith=search_term))
+        context = {
+            'boards': searched_user
+        }
+        return render(request, 'pinterest/search_result.html', context)
 
-def user_show_info(request):
-    pass
+def user_show_info(request, id):
+    current_user = User.objects.get(email=request.session['email'])
+    show_user = User.objects.get(id=id)
+
+    following = show_user.following.all()
+    following_num = len(following)
+    followers = show_user.followers.all()
+    followers_num = len(followers)
+
+    followed = False
+    if current_user in show_user.followers.all():
+        followed = True
+    context = {
+        'show_user': show_user,
+        'current_user': current_user,
+        'follower': followers_num,
+        'following': following_num,
+        "followed": followed
+    }
+    print('------Follower List-----------')
+    print(show_user.followers.all())
+    print(followed)
+    return render(request, 'pinterest/user_info.html', context)
 
 def add_pin(request, id):
     current_user = User.objects.get(email=request.session['email'])
@@ -219,3 +267,14 @@ def add_pin(request, id):
     current_user.pins_saved.add(Pin.objects.get(id=id))
     current_user.save()
     return redirect(reverse('pinterest:show_user_pins'))
+
+def follow(request, id):
+    current_user = User.objects.get(email=request.session['email'])
+    current_user.following.add(User.objects.get(id=id))
+    current_user.save()
+    return redirect(reverse('pinterest:user_show'))
+def unfollow(request, id):
+    current_user = User.objects.get(email=request.session['email'])
+    current_user.following.remove(User.objects.get(id=id))
+    current_user.save()
+    return redirect(reverse('pinterest:user_show'))

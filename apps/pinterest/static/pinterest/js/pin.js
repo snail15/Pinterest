@@ -27,26 +27,31 @@ function getCookie(c_name)
     return "";
  }
 
+function activateSearch(selector) {
+     $(selector).keyup(function(){
+         $.ajax({
+            url: 'search',
+            method: 'POST',
+            data: $(selector).parent().serialize(),
+            success: function(serverResponse) {
+                $('.pin-row').html(serverResponse)
+                if (selector === '#search-bar'){
+                    activateMasonary();
+                }
+            }
+        })
+    })
+}
+
 $(document).ready(function () {
    
     activateMasonary();
 
-     $.ajaxSetup({
+    $.ajaxSetup({
         headers: { "X-CSRFToken": getCookie("csrftoken") }
     });
 
-    $('#search-bar').keyup(function(){
-        console.log('search keyup');
-        console.log($('#search-bar').parent().serialize());
-         $.ajax({
-            url: 'search',
-            method: 'POST',
-            data: $('#search-bar').parent().serialize(),
-            success: function(serverResponse) {
-                $('.pin-row').html(serverResponse)
-                activateMasonary();
-            }
-        })
-    })
+    activateSearch('#search-bar');
+    activateSearch('#search-user');
 
 });

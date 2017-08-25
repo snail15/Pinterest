@@ -49,7 +49,7 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-8">
-                        <h1 class='username'>{{request.session.username}}</h1>
+                        <h1 class='username'>{{show_user.name}}</h1>
                     </div>
                     <div class="col-sm-4">
                         <div class="row">
@@ -67,11 +67,12 @@
                 <div class="row">
                     <div class="col-sm-5">
                         <div class="row">
-                            <div class="col-sm-5">
-                                <a data-toggle='modal' data-target='#pinModal' class='create-link'>Save Pin</a>
-                            </div>
-                            <div class="col-sm-7">
-                                <a data-toggle='modal' data-target='#boardModal' class='create-link'>Create Board</a>
+                            <div class="col-sm-12">
+                                {% if followed %}
+                                <a href="{%url 'pinterest:unfollow' id=show_user.id%}" class='create-link'>Unfollow {{show_user.name}}</a>
+                                {% else %}
+                                <a href="{%url 'pinterest:follow' id=show_user.id%}"class='create-link'>Follow {{show_user.name}}</a>
+                                {% endif %}
                             </div>
                         </div>
                     </div>
@@ -79,80 +80,14 @@
                 </div>
                 <div class="user-content-btn-row row">
                     <div class="col-sm-6">
-                        <a href="{%url 'pinterest:show_user_pins'%}" class='create-link' id='showPin'>Your Pin</a>
+                        <a href="{%url 'pinterest:show_user_pins'%}" class='create-link' id='showPin'>{{show_user.name}}'s Pin</a>
                     </div>
                     <div class="col-sm-6">
-                        <a href="{%url 'pinterest:board_index'%}" class='create-link' id='showBoard'>Your Board</a>
+                        <a href="{%url 'pinterest:board_index'%}" class='create-link' id='showBoard'>{{show_user.name}}'s Board</a>
                     </div>
                 </div>
             </div>
             <div class="col-sm-3"></div>
-        </div>
-        <div class="row" id='content-row'>
-        </div>
-        <div class="modal fade" id="boardModal" tabindex="-1" role="dialog" aria-labelledby="boardModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="boardModalLabel">Create Board</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                       <form action='{% url "pinterest:create_board" %}' method='post' enctype="multipart/form-data">
-                            {% csrf_token %}
-                        <div class="wrapper">
-                            <label for="{{ pin_form.title_for_label }}">Title:</label>
-                            {{board_form.title}}
-                        </div>
-                        <div class="wrapper">
-                            <label for="{{ pin_form.description_for_label }}">Description:</label>
-                            {{board_form.description}}
-                        </div>
-                        <div class="wrapper">
-                            <label for="{{ pin_form.description_for_label }}">Topic:</label>
-                            {{board_form.topic}}
-                        </div>
-                        <input class='btn btn-primary btn-modal' type="submit" value="Save">
-                        <button type="button" class="btn btn-secondary btn-modal" data-dismiss="modal">Close</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="pinModal" tabindex="-1" role="dialog" aria-labelledby="pinModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="pinModalLabel">Save Pin</h5>
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span></button>
-                    </div>
-                    <div class="modal-body">
-                        <form action='{% url "pinterest:create" %}' method='post' enctype="multipart/form-data">
-                            {% csrf_token %}
-                        <div class="wrapper">
-                            <label for="{{ pin_form.title_for_label }}">Title:</label>
-                            {{pin_form.title}}
-                        </div>
-                        <div class="wrapper">
-                            <label for="{{ pin_form.description_for_label }}">Description:</label>
-                            {{pin_form.description}}
-                        </div>
-                        <div class="wrapper">
-                            <label for="{{ pin_form.topic_for_label }}">Topic:</label>
-                            {{pin_form.topic}}
-                        </div>
-                        <div class="wrapper">
-                            <label for="{{ pin_form.image_for_label }}">Image:</label>
-                            {{pin_form.image}}
-                        </div>
-                        <input class='btn btn-primary btn-modal' type="submit" value="Save">
-                        <button type="button" class="btn btn-secondary btn-modal" data-dismiss="modal">Close</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
