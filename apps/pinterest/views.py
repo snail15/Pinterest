@@ -200,11 +200,8 @@ def search(request):
                 'pins': searched_pin
             }
             return render(request, 'pinterest/search_result.html', context)
-        print("#####################################")
-        print(search_term)
-        searched_pin = Pin.objects.filter(Q(title__contains=search_term) | Q(description__contains=search_term))
-        searched_user = User.objects.filter(name__startswith=search_term)
-        print(searched_user)
+        current_user = User.objects.get(email=request.session['email'])
+        searched_pin = Pin.objects.filter(Q(title__contains=search_term) | Q(description__contains=search_term)).exclude(Q(created_by=current_user) | Q(saved_by=current_user))
         context = {
             'pins': searched_pin
         }
