@@ -37,9 +37,36 @@ function activateSearch(selector) {
                 $('.pin-row').html(serverResponse)
                 if (selector === '#search-bar'){
                     activateMasonary();
+                    activateHover();
                 }
             }
         })
+    })
+}
+
+function activateDeleteComment(selector){
+      $(selector).click(function(){
+        $.ajax({
+            url: $(this).attr('path'),
+            method: 'GET',
+            success: function(serverResponse) {
+                $('.comment-row').html(serverResponse);
+            },
+            complete: function() {
+                activateDeleteComment('.shame');
+            }
+        })
+    })
+}
+
+function activateHover(){
+
+    $('.card-wrapper').hover(function(){
+        $(this).css('background-color', 'wheat');
+        $(this).find('a').css('visibility', 'visible');
+    }, function(){
+        $(this).css('background-color', '');
+        $(this).find('a').css('visibility', 'hidden');
     })
 }
 
@@ -53,5 +80,37 @@ $(document).ready(function () {
 
     activateSearch('#search-bar');
     activateSearch('#search-user');
+    activateHover();
+   
+
+    $('.btn-comment').click(function(){
+        $.ajax({
+            url: 'comment/create',
+            method: 'POST',
+            data: $('#comment-form').serialize(),
+            success: function(serverResponse) {
+                $('.comment-row').append(serverResponse);
+                $('#comment').val('');
+            },
+            complete: function(){
+                activateDeleteComment('.shame');
+            }
+        })
+    })
+
+    $('.shame').click(function(){
+        $.ajax({
+            url: $(this).attr('path'),
+            method: 'GET',
+            success: function(serverResponse) {
+                $('.comment-row').html(serverResponse);
+                
+            },
+            complete: function() {
+                activateDeleteComment('.shame');
+            }
+        })
+    })
+
 
 });

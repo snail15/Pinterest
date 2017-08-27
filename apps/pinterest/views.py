@@ -2,7 +2,7 @@
 from __future__ import unicode_literals
 
 from django.shortcuts import render, redirect, HttpResponse
-from .models import Pin, Board, Topic
+from .models import *
 from ..users.models import User
 from .forms import PinForm, BoardForm, TopicForm
 from django.contrib import messages
@@ -94,7 +94,6 @@ def delete_pin(request, id):
 def user_show(request):
    
     current_user = User.objects.filter(email=request.session['email'])
-    print(current_user)
     following = current_user[0].following.all()
     following_num = len(following)
     
@@ -104,12 +103,15 @@ def user_show(request):
     pin_form = PinForm()
     board_form = BoardForm()
 
+    user_pins = Pin.objects.filter(Q(created_by=current_user[0]) | Q(saved_by=current_user[0]))
+    
     context = {
-        'user': current_user,
+        'user': current_user[0],
         'follower': followers_num,
         'following': following_num,
         'pin_form': pin_form,
-        'board_form': board_form
+        'board_form': board_form,
+        'pins': user_pins
 
     }
     return render(request, 'pinterest/user_show.html', context)
@@ -200,11 +202,8 @@ def search(request):
                 'pins': searched_pin
             }
             return render(request, 'pinterest/search_result.html', context)
-        print("#####################################")
-        print(search_term)
-        searched_pin = Pin.objects.filter(Q(title__contains=search_term) | Q(description__contains=search_term))
-        searched_user = User.objects.filter(name__startswith=search_term)
-        print(searched_user)
+        current_user = User.objects.get(email=request.session['email'])
+        searched_pin = Pin.objects.filter(Q(title__contains=search_term) | Q(description__contains=search_term)).exclude(Q(created_by=current_user) | Q(saved_by=current_user))
         context = {
             'pins': searched_pin
         }
@@ -278,3 +277,66 @@ def unfollow(request, id):
     current_user.following.remove(User.objects.get(id=id))
     current_user.save()
     return redirect(reverse('pinterest:user_show'))
+
+def show_another_user_pins(request, id):
+    current_user = User.objects.get(email=request.session['email'])
+    another_user = User.objects.get(id=id)
+    another_user_pins = Pin.objects.filter(Q(created_by=another_user) | Q(saved_by=another_user)).exclude(Q(saved_by=current_user) | Q(created_by=current_user))
+
+    context = {  
+        'another_user_pins': another_user_pins,
+        'another_user': another_user
+    }
+    return render(request, 'pinterest/user_pin.html', context)
+
+def show_pin(request, id):
+    pin = Pin.objects.get(id=id)
+    created_user = pin.created_by
+    saved_by = len(pin.saved_by.all())
+
+    popular = False
+    if saved_by > 1:
+        popular = True
+
+    comments = PinComment.objects.filter(pin=pin)
+    context = {
+        'pin': pin,
+        'created_user': created_user,
+        'saved_by': saved_by,
+        'popular': popular,
+        'comments': comments
+    }
+    return render(request, 'pinterest/show_pin.html', context)
+
+def create_comment(request):
+    print(request.POST, "=======post=======")
+    comment = request.POST.get('comment')
+    print('commet', comment)
+    print('pin-id', request.POST.get('pin-id'))
+    pin_id = int(request.POST.get('pin-id'))
+    current_pin = Pin.objects.get(id=pin_id)
+    current_user = User.objects.get(email=request.session['email'])
+    new_comment = PinComment.objects.create(comment=comment, author=current_user, pin=current_pin)
+    new_comment.save()
+    # current_user_comments = PinComment.objects.filter(Q(authour=current_user) & Q(pin=current_pin))
+
+    context = {
+        'comment': new_comment
+    }
+    # return redirect(reverse('pinterest:show_pin', kwargs={'id':current_pin.id}))
+    return render(request, 'pinterest/comment.html', context)
+
+def delete_comment(request, id, pin_id):
+    
+    print(pin_id, '----------pin_id')
+    PinComment.objects.get(id=id).delete()
+    comments = PinComment.objects.filter(pin=Pin.objects.get(id=pin_id))
+    
+    delete_comment = True
+
+    context = {
+        'delete_comment': delete_comment,
+        'comments': comments
+    }
+
+    return render(request, 'pinterest/comment.html', context)

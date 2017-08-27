@@ -67,13 +67,12 @@ class Board(models.Model):
 
 class BaseComment(models.Model):
     author = models.ForeignKey(User, related_name='comments')
-    title = models.CharField(max_length=255)
     comment = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
 class PinComment(BaseComment):
-    pin = models.ForeignKey(Pin)
+    pin = models.ForeignKey(Pin, related_name='comments')
 
 class BoardComment(BaseComment):
-    board = models.ForeignKey(Board)
+    board = models.ForeignKey(Board, related_name='comments')

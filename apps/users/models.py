@@ -35,6 +35,7 @@ class User(models.Model):
     name = models.CharField(max_length=100)
     age = models.IntegerField()
     gender = models.IntegerField()
+    profile = models.ImageField(upload_to='users', default='users/profile.jpg')
     email = models.CharField(max_length=100)
     password = models.CharField(max_length=255)
     following = models.ManyToManyField("self", related_name='followers', symmetrical=False)
