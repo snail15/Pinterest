@@ -25,9 +25,11 @@ def registration(request):
         request.session['username'] = user_name
         user_email = request.POST['email']
         request.session['email'] = user_email
-        User.objects.create(name=user_name, email=user_email, password=server_password, gender=request.POST['gender'], age=request.POST['age'])
+        new_user = User.objects.create(name=user_name, email=user_email, password=server_password, gender=request.POST['gender'], age=request.POST['age'])
         print('hitting here----------------------')
         print(request.POST)
+        new_user.profile=request.FILES['profile_pic']
+        new_user.save()
         # Registered user is automatically treated as logged in user, redirected to pin_index
         return redirect(reverse('pinterest:pin_index'))
     else: # User is trying to log in

@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta/css/bootstrap.min.css" integrity="sha384-/Y6pD6FV/Vv2HJnA6t+vslU6fwYXjCFtcEpHbNJ0lyAFsXTsjBbfaDjzALeQsN6M"
         crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Quicksand:400,700" rel="stylesheet">
+    <link rel="icon" type='image/png' href="{%static 'pinterest/img/pinterest_logo.png'%}">
     <link rel="stylesheet" href="{% static 'users/css/style.css' %}">
     <title>Welcome to Pinterest(clone)</title>
 </head>
@@ -20,7 +21,7 @@
                     <img class="pinterest-logo" src="{%static 'users/img/pinterest_logo.png'%}" alt="logo">
                     <h3 class='greeting'>Welcome to Pinterest</h3>
                     <div class="form">
-                        <form class='registration-form' action="{%url 'users:registration'%}" method='post'>
+                        <form class='registration-form' action="{%url 'users:registration'%}" method='post' enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="form-group">
                                 <input type="email" class="form-control" name='email' id="email" aria-describedby="emailHelp" placeholder="Email">
@@ -41,6 +42,10 @@
                                 </div>
                             </div>
                             <div class="form-group">
+                                <label for="profile_pic">Choose Profile Picture</label>
+                                <input name='profile_pic' type="file" class="form-control-file" id="profile_pic">
+                            </div>
+                            <div class="form-group">
                                 <div class="form-check form-check-inline">
                                     <label class="form-check-label">
                                     <input class="form-check-input" type="radio" name="gender" id="male" value="1"> Male
@@ -52,14 +57,14 @@
                                     </label>
                                 </div>
                                 <div class="form-check form-check-inline">
-                                     <label class="form-check-label">
+                                    <label class="form-check-label">
                                     <input class="form-check-input" type="radio" name="gender" id="female" value="2"> Custom
                                     </label>
                                 </div>
                             </div>
                             <button type='submit' class="btn btn-primary btn-registration">Register</button>
                         </form>
-                            <a class="btn btn-primary btn-login" href="{%url 'users:login'%}">Log in</a>
+                        <a class="btn btn-primary btn-login" href="{%url 'users:login'%}">Log in</a>
                     </div>
                 </div>
             </div>
