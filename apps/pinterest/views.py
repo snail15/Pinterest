@@ -139,8 +139,6 @@ def create_topic(request):
         Topic.objects.create(name=request.POST['name'])
         return redirect(request.META.get('HTTP_REFERER', '/'))
 
-# def board_index(request):
-
 def board_index(request):
     user_boards = Board.objects.filter(created_by=User.objects.get(email=request.session['email']))
     context = {
@@ -148,6 +146,24 @@ def board_index(request):
     }
     return render(request, 'pinterest/board_index.html', context)
 
+def show_another_user_boards(request, id):
+    show_user = User.objects.get(id=id)
+    user_boards = Board.objects.filter(created_by=show_user)
+    num_pin_in_boards = {}
+    for board in user_boards:
+        num_pin_in_boards[board.id] = len(board.pins.all())
+        print('num pin -------', num_pin_in_boards[board.id])
+    
+    context = {
+        'another_user': show_user,
+        'another_user_boards': user_boards,
+        'num_pin': num_pin_in_boards
+    }
+
+    return render(request, 'pinterest/another_user_boards.html', context)
+
+def view_board(reqeust, id):
+    pass
 
 def create_board(request):
     
@@ -170,7 +186,7 @@ def create_board(request):
             new_board = form.save(commit=False)
             new_board.created_by = user
             new_board.save()
-            return redirect(reverse('pinterest:pin_index'))
+            return redirect(reverse('pinterest:user_show'))
     elif request.method == "GET":
         form = BoardForm()
         context = {
@@ -200,9 +216,44 @@ def show_board(request, id):
 
 
 def edit_board(request, id):
-    pass
+    selected_board = Board.objects.get(id=id)
+    board_pins = Pin.objects.filter(boards=selected_board)
+    current_user = User.objects.get(email=request.session['email'])
+    user_pins = Pin.objects.filter(Q(created_by=current_user) | Q(saved_by=current_user)).exclude(boards=selected_board)
+    context = {
+        'pins': board_pins,
+        'all_pins': user_pins,
+        'board': selected_board
+    }
+
+    return render(request, 'pinterest/edit_board.html', context)
+
+def board_add_pin(request, id):
+    selected_pins = request.POST
+    print('----selected pins-----', selected_pins)
+    edited_board = Board.objects.get(id=id)
+    for key in selected_pins:
+        if key != 'csrfmiddlewaretoken':
+            print('----key-----',key)
+            edited_board.pins.add(Pin.objects.get(id=key))
+    
+    return redirect(reverse('pinterest:edit_board', kwargs={'id': id}))
 
 
+
+def unpin_from_board(request, id, board_id):
+    selected_pin = Pin.objects.get(id=id)
+    selected_board = Board.objects.get(id=board_id)
+    selected_board.pins.remove(selected_pin)
+    selected_board.save()
+    remaining_pins = selected_board.pins.all()
+    context = {
+        'pins': remaining_pins,
+        'board': selected_board
+    }
+
+    return render(request, 'pinterest/board_pins.html', context)
+    
 # def delete_board(request):
 
 def search(request):
