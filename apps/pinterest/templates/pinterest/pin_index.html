@@ -24,14 +24,14 @@
                         <span class="navbar-toggler-icon"></span></button>
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                         <form class="form-search my-2 my-lg-0" method='post' action="{%url 'pinterest:search'%}">
-                            <input id='search-bar' name='search_bar' class="form-control mr-sm-2" type="text" placeholder="Search Pin" aria-label="Search">                            {% comment %} <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>                            {% endcomment %}
+                            <input id='search-bar' name='search_bar' class="form-control mr-sm-2" type="text" placeholder="Search Pin" aria-label="Search">                                          
                         </form>
                         <form class="form-search my-2 my-lg-0" method='post' action="{%url 'pinterest:search'%}">
-                            <input id='search-user' name='search_user' class="form-control mr-sm-2" type="text" placeholder="Search User" aria-label="Search">                            {% comment %} <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>                            {% endcomment %}
+                            <input id='search-user' name='search_user' class="form-control mr-sm-2" type="text" placeholder="Search User" aria-label="Search">                                          
                         </form>
-                        <form class="form-search my-2 my-lg-0" method='post' action="{%url 'pinterest:search'%}">
-                            <input id='search-board' name='search_board' class="form-control mr-sm-2" type="text" placeholder="Search Board" aria-label="Search">                            {% comment %} <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>                            {% endcomment %}
-                        </form>
+                        {% comment %} <form class="form-search my-2 my-lg-0" method='post' action="{%url 'pinterest:search'%}">
+                            <input id='search-board' name='search_board' class="form-control mr-sm-2" type="text" placeholder="Search Board" aria-label="Search">                                          
+                        </form> {% endcomment %}
                         <ul class="navbar-nav mr-auto">
                             <li class="nav-item active">
                                 <a class="nav-link" href="{%url 'pinterest:pin_index'%}">Home <span class="sr-only">(current)</span></a>

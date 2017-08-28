@@ -112,6 +112,7 @@ $(document).ready(function () {
     activateSearch('#search-bar');
     activateSearch('#search-user');
     activateHover('.card-wrapper');
+    activateHover('.board-wrapper')
    
 
     $('.btn-comment').click(function(){
@@ -200,6 +201,8 @@ $(document).ready(function () {
 
         })
     })
+
+    $(".thumbnail").imgCheckbox();
 
 
 });
