@@ -81,7 +81,7 @@
                 </div> {% endcomment %}
                 <div class="user-content-btn-row row">
                     <div class="col-sm-3">
-                        <p class='create-link underline' id='showPin'>Pin</p>
+                        <p class='create-link underline' path="{%url 'pinterest:switch_to_pin'%}" id='showPin'>Pin</p>
                     </div>
                     <div class="col-sm-3">
                         <p class='create-link' path="{%url 'pinterest:show_board' id=user.id%}"id='showBoard'>Board</p>
@@ -109,9 +109,10 @@
                             </div>
                             <div class="row">
                                 <div class="col-sm-6 link-col">
+                                    <a path="{%url 'pinterest:unpin' id=pin.id%}" class="create-link unpin card-link">Unpin</a>
                                 </div>
                                 <div class="col-sm-6 link-col">
-                                    <a href="{%url 'pinterest:show_pin' id=pin.id%}" class="card-link">View</a>
+                                    <a href="{%url 'pinterest:show_pin' id=pin.id%}" class="card-link create-link">View</a>
                                 </div>
                             </div>
                         </div>

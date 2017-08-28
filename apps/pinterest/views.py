@@ -78,18 +78,21 @@ def edit_pin(request, id):
         return render(request, 'pinterest/edit_pin.html', context)
 
 
-def delete_pin(request, id):
-    try:
-        pin = Pin.objects.find(id=id)
-        context = {
-            'pin': pin
-        }
-    except Exception as problem:
-        return redirect('/')
-    if request.method == "POST":
-        return redirect('/')
-    elif request.method == "GET":
-        return render(request, 'pinterest/delete_pin.html', context)
+def unpin(request, id):
+  
+    pin = Pin.objects.get(id=id)
+    current_user = User.objects.get(email=request.session['email'])
+
+    # if the user is the one who created the pin, then delete it from pinterest
+    if current_user == pin.created_by:
+        pin.delete()
+    else: # remove it from the saved pins list
+        current_user.pins_saved.remove(pin)
+    user_pins = Pin.objects.filter(Q(created_by=current_user) | Q(saved_by=current_user))
+    context = {
+        'pins':user_pins
+    }
+    return render(request, 'pinterest/switch_pin.html', context)
 
 def user_show(request):
    
@@ -177,18 +180,27 @@ def create_board(request):
 
 # def show_board(request):
 def show_board(request, id):
-    try:
-        board = Board.objects.get(id=id)
-    except Exception as problem:
-        return redirect(reverse('pinterest:pin_index'))
+    user_boards = Board.objects.filter(created_by=User.objects.get(id=id))
+    num_pin_in_boards = {}
+    for board in user_boards:
+        num_pin_in_boards[board.id] = len(board.pins.all())
+        print('num pin -------', num_pin_in_boards[board.id])
+    # pin_in_boards = {}
+    # for board in user_boards:
+    #     pin_in_boards[board.id] = Pin.objects.filter(boards=board)[0]
+    #     print('###show board ###', Pin.objects.filter(boards=board))
+    #     print(pin_in_boards[board.id])
     context = {
-        'board': board,
-        'pins': board.pins.all()
+        'boards': user_boards,
+        # 'board_pins': pin_in_boards
+        'num_pin': num_pin_in_boards
     }
+
     return render(request, 'pinterest/show_board.html', context)
 
 
-# def edit_board(request):
+def edit_board(request, id):
+    pass
 
 
 # def delete_board(request):
@@ -265,7 +277,7 @@ def add_pin(request, id):
     print('#############################',id)
     current_user.pins_saved.add(Pin.objects.get(id=id))
     current_user.save()
-    return redirect(reverse('pinterest:show_user_pins'))
+    return redirect(reverse('pinterest:user_show'))
 
 def follow(request, id):
     current_user = User.objects.get(email=request.session['email'])
@@ -340,3 +352,14 @@ def delete_comment(request, id, pin_id):
     }
 
     return render(request, 'pinterest/comment.html', context)
+
+def switch_to_pin(request):
+    
+    current_user = User.objects.filter(email=request.session['email'])
+    user_pins = Pin.objects.filter(Q(created_by=current_user[0]) | Q(saved_by=current_user[0]))
+
+    context = {
+        'pins':user_pins
+    }
+
+    return render(request, 'pinterest/switch_pin.html', context)
