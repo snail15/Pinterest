@@ -1,13 +1,28 @@
-
-    <div class="row pin-row">
-        <div class="col-sm-12">
-            <div class="grid">
-                <div class="grid-sizer"></div>
-                <div class="gutter-sizer"></div>
-                {% for pin in pins %}
-                <div class="grid-item"><img class='pin-image' src="{%static 'pinterest/img/pin.png'%}" alt="pin"><img class='pin-thumnail' src="{{pin.image.url}}"
-                        alt="pin image"></div>
-                {% endfor %}
+{%load static%} 
+<div class="col-sm-2">
+                <a data-toggle='modal' data-target='#boardModal'><img class='link-icon' src="{%static 'pinterest/img/add.png'%}" alt="create board"></a>
             </div>
-        </div>
-    </div>
+            <div class="col-sm-9" id='user-content-col'>
+                <div class="row">
+                    {% for board in boards%}
+                    <div class="col-sm-4">
+                       <div class="board-wrapper">
+                           <div class="card board-card">
+                               <div class="card-body">
+                                    <p id='board-title' class=' board-text'>{{board.title}}</p>
+                                    {%for key, value in num_pin.items%}
+                                    {% if key == board.id%}
+                                    <p class='board-text'>{{value}} pins saved</p>
+                                    {% endif %}
+                                    {% endfor %}
+                                    <a href="{%url 'pinterest:edit_board' id=board.id%}" class="board-text btn btn-danger board-link">Edit</a>
+                               </div>
+                           </div>
+                       </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-sm-1"></div>
+
+            

@@ -1,13 +1,27 @@
 function activateMasonary(){
 
-    var $grid = $('.grid').imagesLoaded( function() {
-        $grid.masonry({
-            itemSelector: '.grid-item',
-            columnWidth: '.grid-sizer',
-            percentPosition: true,
-            horizontalOrder: true,
-            gutter: '.gutter-sizer',
-        });
+    // var $grid = $('.grid').imagesLoaded( function() {
+    //     $grid.masonry({
+    //         itemSelector: '.grid-item',
+    //         columnWidth: '.grid-sizer',
+    //         percentPosition: true,
+    //         horizontalOrder: true,
+    //         gutter: '.gutter-sizer',
+    //     });
+    // });
+
+    // init Masonry
+    var $grid = $('.grid').masonry({
+    // options...
+        itemSelector: '.grid-item',
+        columnWidth: '.grid-sizer',
+        percentPosition: true,
+        horizontalOrder: true,
+        gutter: '.gutter-sizer',
+    });
+    // layout Masonry after each image loads
+    $grid.imagesLoaded().progress( function() {
+        $grid.masonry('layout');
     });
 
 }
@@ -59,14 +73,31 @@ function activateDeleteComment(selector){
     })
 }
 
-function activateHover(){
+function activateHover(selector){
 
-    $('.card-wrapper').hover(function(){
+    $(selector).hover(function(){
         $(this).css('background-color', 'wheat');
         $(this).find('a').css('visibility', 'visible');
     }, function(){
         $(this).css('background-color', '');
         $(this).find('a').css('visibility', 'hidden');
+    })
+}
+
+function activateUnpin(selector){
+    $(selector).click(function(){
+         $.ajax({
+            url: $(this).attr('path'),
+            method: 'GET',
+            success: function(serverResponse) {
+                $('#content-row').html(serverResponse);
+            },
+            complete: function() {
+                activateMasonary();
+                activateHover('.card-wrapper');
+            }
+
+        })
     })
 }
 
@@ -80,7 +111,7 @@ $(document).ready(function () {
 
     activateSearch('#search-bar');
     activateSearch('#search-user');
-    activateHover();
+    activateHover('.card-wrapper');
    
 
     $('.btn-comment').click(function(){
@@ -109,6 +140,64 @@ $(document).ready(function () {
             complete: function() {
                 activateDeleteComment('.shame');
             }
+        })
+    })
+
+    $('#showBoard').click(function (){
+        if ($('#showPin').hasClass('underline')){
+            $('#showPin').removeClass('underline');
+        }
+        if (!$(this).hasClass('underline')){
+            $(this).addClass('underline');
+        }
+        $.ajax({
+            url: $(this).attr('path'),
+            method: 'GET',
+            success: function(serverResponse) {
+                $('#content-row').html(serverResponse);
+            },
+            complete: function() {
+                activateHover('.board-wrapper');
+            }
+
+        })
+    })
+
+    $('#showPin').click(function (){
+        if (!$(this).hasClass('underline')){
+            $(this).addClass('underline');
+        }
+        if ($('#showBoard').hasClass('underline')){
+            $('#showBoard').removeClass('underline');
+        }
+        $.ajax({
+            url: $(this).attr('path'),
+            method: 'GET',
+            success: function(serverResponse) {
+                $('#content-row').html(serverResponse);
+            },
+            complete: function() {
+                activateMasonary();
+                activateHover('.card-wrapper');
+                activateUnpin('.unpin');
+            }
+
+        })
+    })
+
+    $('.unpin').click(function(){
+         $.ajax({
+            url: $(this).attr('path'),
+            method: 'GET',
+            success: function(serverResponse) {
+                $('#content-row').html(serverResponse);
+            },
+            complete: function() {
+                activateMasonary();
+                activateHover('.card-wrapper');
+                activateUnpin('.unpin');
+            }
+
         })
     })
 

@@ -150,6 +150,12 @@ span{
     visibility: hidden;
 }
 
+.board-link {
+    margin-left:40%;
+    font-size: 50%;
+    visibility: hidden;
+}
+
 .card-info {
     text-align: center;
     font-size: 85%;
@@ -172,6 +178,20 @@ span{
     border-radius: 3%;
 }
 
+.board-wrapper {
+    padding: 1.5%;
+    border-radius: 3%;
+}
+
+.board-card {
+    background-color: gray;
+    margin:0;
+}
+
+.board-text {
+    text-align: center;
+}
+
 .btn-logout {
     padding-left: 0;
 }
@@ -187,7 +207,9 @@ span{
     margin-top:15%;
     transition: opacity 0.5s;
 }
-
+.board-thumbnail {
+    width: 100%;
+}
 .link-icon:hover {
     opacity: 0.6;
 }
@@ -235,11 +257,13 @@ span{
 }
 
 .underline {
-    text-decoration: underline;
+   border-bottom: 2px solid gray;
 }
 
 
 .comment-form-group{ margin-bottom: 0;}
+
+.thumbnail-grid{width:100%;}
 
 @media only screen and (max-width: 768px) {
     .container {
