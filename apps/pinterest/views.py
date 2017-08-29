@@ -42,7 +42,7 @@ def create_pin(request):
         new_pin.image = request.FILES['image']
         new_pin.created_by = user
         new_pin.save()
-        return redirect(reverse('pinterest:show_user_pins'))
+        return redirect(reverse('pinterest:user_show'))
     elif request.method == "GET":
         form = PinForm()
         topicForm = TopicForm()

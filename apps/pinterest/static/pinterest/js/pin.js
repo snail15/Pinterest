@@ -51,7 +51,8 @@ function activateSearch(selector) {
                 $('.pin-row').html(serverResponse)
                 if (selector === '#search-bar'){
                     activateMasonary();
-                    activateHover();
+                    activateHover('.card-wrapper');
+                    activateHover('.board-wrapper')
                 }
             }
         })
