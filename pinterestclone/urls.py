@@ -22,6 +22,7 @@ if settings.DEBUG:
     import debug_toolbar
     urlpatterns = [
         url(r'^admin/', admin.site.urls),
+        url(r'^', include('apps.portfoliosite.urls', namespace='portfolio')),
         url(r'^users/', include('apps.users.urls', namespace='users')),
         url(r'^pinterest/', include('apps.pinterest.urls', namespace='pinterest')),
         url(r'^__debug__/', include(debug_toolbar.urls)),
