@@ -10,6 +10,7 @@
     <link rel="stylesheet" type="text/css" href="{%static 'portfoliosite/css/animate.css'%}">
     <link rel="stylesheet" href="{%static 'portfoliosite/css/tooltipster.bundle.min.css'%}">
     <link rel="stylesheet" href="{%static 'portfoliosite/css/tooltipster-sideTip-shadow.min.css'%}">
+    <link href="http://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.css" rel="stylesheet"  type='text/css'>
     <link rel="stylesheet" type="text/css" href="{%static 'portfoliosite/css/style.css'%}">
     <link rel="stylesheet" type="text/css" href="{%static 'portfoliosite/css/queries.css'%}">
 
@@ -125,7 +126,7 @@
                         </div>
                     </div>
                     <hr>
-                    <div class="row">
+                    <div id='uoc' class="row">
                         <div class="col-sm-3" id="last-pic">
                             <img src="{%static 'portfoliosite/img/uoc.gif'%}" alt="Emory University">
                         </div>
@@ -176,10 +177,19 @@
             </div>
         </div>
         <div class="row contact-row">
-            <h2 class="row-header">Contact Me</h2>
-            <p>Email</p>
-            <p>LinkedIn</p>
-
+            <h2 class="row-header contact-me">Contact Me</h2>
+            <div class="col-sm-4">
+                <a class='contact-link' href="mailto:1986seoul@gmail.com?subject=Hi, Sungin"><i class="fa fa-envelope-o fa-4x" aria-hidden="true"></i></a>
+                <h4 class='contact-info'>My Email</h4>
+            </div>
+            <div class="col-sm-4">
+                <a target="_blank" href="http://www.github.com/snail15" class="contact-link"><i class="fa fa-github fa-4x" aria-hidden="true"></i></a>
+                <h4 class='contact-info'>My Github Repository</h4>
+            </div>
+            <div class="col-sm-4">
+                <a target="_blank" href="" class="contact-link"><i class="fa fa-linkedin-square fa-4x" aria-hidden="true"></i></a>
+                <h4 class='contact-info'>My LinkedIn Profile</h4>
+            </div>
         </div>
     </div>
 
