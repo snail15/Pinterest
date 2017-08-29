@@ -234,6 +234,8 @@ h4 { font-size: 100%; }
     padding-top: 25%;
 }
 
+#uoc { margin-bottom: 7%;}
+
 /* Portfolio Section */
 #portfolio { 
     margin-top: 2%;
@@ -333,3 +335,19 @@ h4 { font-size: 100%; }
 /* Contact Section */
 
 .contact-row { background-color: #424242; }
+
+.fa { 
+    margin-left: 41.5%;
+    transition: color 0.5s;
+}
+
+.fa:hover {
+    color: wheat;
+}
+
+.contact-me { margin-bottom: 4%;}
+
+.contact-link,
+.contact-link:visited { color: #e67e22}
+
+.contact-info { text-align: center; }
